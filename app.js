@@ -6,7 +6,7 @@ import "dotenv/config";
 const generateOTP = () =>
 	randomstring.generate({ length: 4, charset: "numeric" });
 const sendMail = async (email, otp) => {
-	const trnsporter = nodemailer.createTransport({
+	const transporter = nodemailer.createTransport({
 		service: "gmail",
 		host: "smtp.gmail.com",
 		port: 587,
@@ -17,7 +17,7 @@ const sendMail = async (email, otp) => {
 		},
 	});
 	try {
-		const info = await trnsporter.sendMail({
+		const info = await transporter.sendMail({
 			from: process.env.EMAIL_USER,
 			to: "kormanyos.antal@gmail.com",
 			subject: "OTP verification",
@@ -39,7 +39,7 @@ app.post("/api/requestotp", (req, res) => {
 	const otp = generateOTP();
 	otpCashe[email] = otp;
 	console.log(otpCashe);
-	// sendMail(email.otp);
+	sendMail(email, otp);
 	res.cookie("otpCache", otpCashe, { httpOnly: true, maxAge: 30000 });
 	res.status(200).json({ message: "OTP sent successfully" });
 });
