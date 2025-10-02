@@ -19,7 +19,7 @@ const sendMail = async (email, otp) => {
 	try {
 		const info = await transporter.sendMail({
 			from: process.env.EMAIL_USER,
-			to: "kormanyos.antal@gmail.com",
+			to: email,
 			subject: "OTP verification",
 			text: `Your OPT verification is ${otp}`,
 		});
@@ -59,3 +59,4 @@ app.post("/api/verifyotp", (req, res) => {
 app.listen(PORT, () => {
 	console.log(`Runs on port ${PORT}`);
 });
+
